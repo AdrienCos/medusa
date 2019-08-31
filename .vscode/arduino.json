@@ -1,0 +1,6 @@
+{
+    "sketch": "micro_keyboard.ino",
+    "board": "arduino:avr:micro",
+    "port": "/dev/cu.usbmodem14101",
+    "programmer": "AVRISP mkII"
+}
