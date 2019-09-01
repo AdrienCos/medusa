@@ -1,6 +1,7 @@
 #include <Keyboard.h>
 
 #define NUM_BUTTONS 1
+#define NUM_MOMENTARY 1
 #define DEBOUNCE_DELAY_MS 200
 
 // Define pins
@@ -14,10 +15,15 @@
 #define DATA_SELECT_6 8
 #define DATA_IN 10
 
+// Define switch types
+#define MOMENTARY 0
+#define LATCHING 1
+
 // Define structs
 typedef struct button {
     unsigned long last_pressed;
     bool state;
+    uint8_t type;
     char key;
 } button_t;
 
@@ -48,6 +54,7 @@ void setup()
         buttons[i].key = 'i';
         buttons[i].last_pressed = 0;
         buttons[i].state = 0;
+        buttons[i].type = (i < NUM_MOMENTARY ? MOMENTARY : LATCHING);
     }
     // Declare the interrupt
     attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), scan_buttons, CHANGE);
@@ -81,7 +88,10 @@ void scan_buttons()
             buttons[i].last_pressed = millis();
             buttons[i].state = state;
             Serial.println(buttons[i].key);
-            Keyboard.print(buttons[i].key);
+            // Only send a key if we pressed a mometaty switch, or toggled a latching one
+            if ((buttons[i].type == MOMENTARY && state == 0) || (buttons[i].type == LATCHING)) {
+                Keyboard.print(buttons[i].key);
+            }
         }
     }
 }

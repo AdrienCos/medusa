@@ -1,5 +1,5 @@
 {
-    "sketch": "micro_keyboard.ino",
+    "sketch": "medusa.ino",
     "board": "arduino:avr:micro",
     "port": "/dev/cu.usbmodem14101",
     "programmer": "AVRISP mkII"
